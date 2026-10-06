@@ -33,3 +33,12 @@ state and beliefs are updated
 ```
 
 This separation makes it possible to test forecast quality and decision quality independently as well as end-to-end.
+
+
+## Decision-dependent observations
+
+Some actions change what information will be observed. Inspection intensity, sensor placement, sampling effort, experimental design, market probing, exploration actions, and diagnostic tests are examples.
+
+For these cases, `UncertaintySource.decision_dependent` should be true and `decision_dependence_note` should explain the mechanism. The optional `observation_process` field records the likelihood or measurement model.
+
+The executable `examples/active_inspection_case.py` uses a latent binary machine condition. A cheap and a deep inspection have different sensitivity and specificity. The same positive signal therefore produces different posterior failure beliefs because the observation model is conditional on the selected action. This is an information-acquisition decision, not merely an external random disturbance.
