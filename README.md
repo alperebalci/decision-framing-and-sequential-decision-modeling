@@ -28,11 +28,12 @@ The Python package provides typed, dependency-free primitives for:
 
 - performance metrics with direction, units, targets, and priorities;
 - decision types with decision makers, timing, information, and constraints;
-- uncertainty sources with observability, timing, decision dependence, temporal structure, and representation;
+- uncertainty sources with observability, timing, decision dependence, observation process, temporal structure, and representation;
 - optional decision-to-metric and uncertainty-to-metric impact matrices;
 - a five-part universal model specification: state, decisions, exogenous information, transitions, objective;
 - explicit physical/resource/information/belief/time state roles;
-- traceability audits from the frame into the formal model;
+- binary belief updates under decision-dependent observation models;
+- traceability audits from the frame into the formal model, including decision-information/state coverage;
 - information requirements for operational policies, including latency, data-quality risk, and fallback behavior;
 - JSON loading and a small validation CLI.
 
@@ -48,10 +49,11 @@ python -m pip install -e ".[dev]"
 
 ```bash
 python examples/inventory_case.py
+python examples/active_inspection_case.py
 python -m decision_framing examples/inventory_frame.json
 ```
 
-The inventory example shows the full chain from a method-neutral frame to a universal model and an implementation information plan.
+The inventory example shows the full chain from a method-neutral frame to a universal model and an implementation information plan. The active inspection example shows a belief state whose update depends on the selected measurement action: different inspection modes induce different observation likelihoods and therefore different posteriors from the same signal.
 
 ## Minimal API example
 
