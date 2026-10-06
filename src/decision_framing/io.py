@@ -46,6 +46,8 @@ def frame_from_dict(data: dict[str, Any]) -> DecisionFrame:
                 timing=item.get("timing", ""),
                 observed_before_decision=bool(item.get("observed_before_decision", False)),
                 decision_dependent=bool(item.get("decision_dependent", False)),
+                decision_dependence_note=item.get("decision_dependence_note", ""),
+                observation_process=item.get("observation_process", ""),
                 temporal_structure=item.get("temporal_structure", "unspecified"),
                 representation=item.get("representation", "unspecified"),
             )
