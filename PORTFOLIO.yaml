@@ -1,0 +1,17 @@
+schema_version: 1
+repository: decision-framing-and-sequential-decision-modeling
+role: foundation
+axis: methodology
+area: decision-framing-and-sequential-decision-modeling
+status: active
+owner: jorsacademy
+related_repositories:
+  - sequential-decision-analytics
+  - management-science
+  - optimization-methods-taxonomy
+  - simulation-optimization-and-uncertainty-quantification
+  - stochastic-programming-methods
+conventions:
+  reproducibility_expected: true
+  benchmark_assumptions_documented: true
+  problem_framing_before_method_selection: true

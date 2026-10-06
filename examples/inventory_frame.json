@@ -1,0 +1,30 @@
+{
+  "problem_name": "Finite-horizon inventory replenishment",
+  "problem_description": "Choose replenishment quantities over time while customer demand is uncertain.",
+  "metrics": [
+    {"name": "operating_cost", "direction": "minimize", "unit": "currency", "priority": 1.0},
+    {"name": "fill_rate", "direction": "maximize", "unit": "fraction", "priority": 0.6}
+  ],
+  "decisions": [
+    {
+      "name": "replenish_inventory",
+      "decision_maker": "inventory planner",
+      "timing": "before demand in each period",
+      "cadence": "daily",
+      "information_available": ["on_hand_inventory", "demand_forecast"],
+      "constraints": ["order quantity is nonnegative", "order quantity <= supplier capacity"]
+    }
+  ],
+  "uncertainties": [
+    {
+      "name": "customer_demand",
+      "timing": "during each period after replenishment",
+      "observed_before_decision": false,
+      "decision_dependent": false,
+      "temporal_structure": "seasonal and serially correlated",
+      "representation": "predictive demand distribution"
+    }
+  ],
+  "decision_impacts": {"replenish_inventory": {"operating_cost": 5, "fill_rate": 5}},
+  "uncertainty_impacts": {"customer_demand": {"operating_cost": 5, "fill_rate": 5}}
+}
