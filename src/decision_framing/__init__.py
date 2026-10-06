@@ -1,5 +1,6 @@
 """Decision framing and sequential-decision modeling primitives."""
 
+from .belief import BinaryBelief, InspectionMode
 from .audit import AuditFinding, AuditReport, audit_frame, audit_information_plan, audit_model
 from .io import frame_from_dict, load_frame
 from .models import (
@@ -21,12 +22,14 @@ from .models import (
 __all__ = [
     "AuditFinding",
     "AuditReport",
+    "BinaryBelief",
     "DecisionFrame",
     "DecisionType",
     "DecisionVariable",
     "ExogenousInformation",
     "InformationPlan",
     "InformationRequirement",
+    "InspectionMode",
     "MetricDirection",
     "PerformanceMetric",
     "StateComponent",
