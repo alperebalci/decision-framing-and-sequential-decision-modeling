@@ -25,3 +25,10 @@ A state that contains too little information can make the transition or policy l
 ## Belief-state warning
 
 `audit_model` raises a review warning when the framing contains uncertainty that is not observed before a decision but the model contains no belief-state component. The warning is intentionally not an error: not every latent uncertainty requires an explicit Bayesian belief state, but the omission should be conscious.
+
+
+## Information-to-state traceability
+
+A framed decision can list the information available when it is made. `StateComponent.source_information` records how those operational information items are represented in the formal state. The model audit warns when a decision claims to use information that is absent from the state representation.
+
+This is deliberately a traceability check rather than a proof of Markov sufficiency. It catches a common modeling error: a policy description refers to a forecast, context feature, estimate, or measurement that the formal state silently omits.
