@@ -63,6 +63,8 @@ class UncertaintySource:
     timing: str = ""
     observed_before_decision: bool = False
     decision_dependent: bool = False
+    decision_dependence_note: str = ""
+    observation_process: str = ""
     temporal_structure: str = "unspecified"
     representation: str = "unspecified"
 
@@ -138,6 +140,7 @@ class StateComponent:
     description: str
     observed: bool = True
     update_source: str = ""
+    source_information: tuple[str, ...] = ()
 
     def __post_init__(self) -> None:
         if not self.name.strip():
