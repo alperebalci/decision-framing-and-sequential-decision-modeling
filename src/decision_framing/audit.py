@@ -41,6 +41,12 @@ def audit_frame(frame: DecisionFrame) -> AuditReport:
     for uncertainty in frame.uncertainties:
         if uncertainty.representation == "unspecified":
             findings.append(AuditFinding("warning", "uncertainty-representation-missing", f"Uncertainty {uncertainty.name!r} has no proposed representation."))
+        if uncertainty.decision_dependent and not uncertainty.decision_dependence_note:
+            findings.append(AuditFinding(
+                "warning",
+                "decision-dependent-uncertainty-undocumented",
+                f"Uncertainty {uncertainty.name!r} is decision-dependent but the dependence mechanism is not documented.",
+            ))
     return AuditReport(tuple(findings))
 
 
@@ -59,6 +65,20 @@ def audit_model(frame: DecisionFrame, model: UniversalModelSpec) -> AuditReport:
         findings.append(AuditFinding("warning", "uncertainty-not-modeled", f"Framed uncertainty {name!r} is not represented as exogenous information."))
     for name in sorted(model_uncertainties - frame_uncertainties):
         findings.append(AuditFinding("error", "unknown-modeled-uncertainty", f"Exogenous information links to unknown uncertainty {name!r}."))
+
+    represented_information = {
+        item
+        for component in model.state
+        for item in (component.name, *component.source_information)
+    }
+    for decision in frame.decisions:
+        for information in decision.information_available:
+            if information not in represented_information:
+                findings.append(AuditFinding(
+                    "warning",
+                    "decision-information-not-in-state",
+                    f"Decision {decision.name!r} uses information {information!r}, but no state component represents it.",
+                ))
 
     if not any(component.kind is StateKind.BELIEF for component in model.state):
         latent = [u.name for u in frame.uncertainties if not u.observed_before_decision]
