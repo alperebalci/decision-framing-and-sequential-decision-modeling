@@ -69,3 +69,63 @@ def test_information_plan_checks_decision_coverage_and_fallback():
     report = audit_information_plan(frame(), plan)
     assert report.ok
     assert "required-information-no-fallback" in {finding.code for finding in report.warnings}
+
+
+def test_model_audit_checks_decision_information_is_represented_in_state():
+    local_frame = DecisionFrame(
+        problem_name="inspection",
+        problem_description="choose a diagnostic action",
+        metrics=(PerformanceMetric("risk", MetricDirection.MINIMIZE),),
+        decisions=(
+            DecisionType(
+                "inspect",
+                "planner",
+                information_available=("context", "failure_belief"),
+            ),
+        ),
+        uncertainties=(
+            UncertaintySource(
+                "signal",
+                observed_before_decision=False,
+                representation="likelihood model",
+            ),
+        ),
+    )
+    incomplete = UniversalModelSpec(
+        state=(
+            StateComponent(
+                "failure_belief",
+                StateKind.BELIEF,
+                "latent failure probability",
+                source_information=("failure_belief",),
+            ),
+        ),
+        decisions=(DecisionVariable("mode", "inspect", "binary"),),
+        exogenous_information=(ExogenousInformation("signal", "signal", "diagnostic result"),),
+        transitions=(TransitionRule("update", "belief update"),),
+        objective="minimize risk",
+    )
+    report = audit_model(local_frame, incomplete)
+    assert "decision-information-not-in-state" in {finding.code for finding in report.warnings}
+
+
+def test_decision_dependent_uncertainty_without_mechanism_is_flagged():
+    local_frame = DecisionFrame(
+        problem_name="active sensing",
+        problem_description="choose how to observe a latent condition",
+        metrics=(PerformanceMetric("risk", MetricDirection.MINIMIZE),),
+        decisions=(DecisionType("sense", "planner"),),
+        uncertainties=(
+            UncertaintySource(
+                "signal",
+                decision_dependent=True,
+                representation="likelihood model",
+            ),
+        ),
+    )
+    from decision_framing import audit_frame
+
+    report = audit_frame(local_frame)
+    assert "decision-dependent-uncertainty-undocumented" in {
+        finding.code for finding in report.warnings
+    }
