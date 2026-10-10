@@ -1,6 +1,12 @@
 """Decision framing and sequential-decision modeling primitives."""
 
 from .belief import BinaryBelief, InspectionMode
+from .decision_governance import (
+    DecisionRule, DecisionTable, DecisionRecord, Recommendation, OverrideRequest,
+    RuleResult, RuleCoverage, DescriptiveOverrideSummary, fingerprint_inputs,
+    resolve_decision, summarize_overrides,
+)
+from .influence import InfluenceArc, InfluenceGraph, InfluenceNode
 from .audit import AuditFinding, AuditReport, audit_frame, audit_information_plan, audit_model
 from .io import frame_from_dict, load_frame
 from .models import (
@@ -20,6 +26,21 @@ from .models import (
 )
 
 __all__ = [
+    "DecisionRule",
+    "DecisionTable",
+    "DecisionRecord",
+    "Recommendation",
+    "OverrideRequest",
+    "RuleResult",
+    "RuleCoverage",
+    "DescriptiveOverrideSummary",
+    "fingerprint_inputs",
+    "resolve_decision",
+    "summarize_overrides",
+    "InfluenceArc",
+    "InfluenceGraph",
+    "InfluenceNode",
+
     "AuditFinding",
     "AuditReport",
     "BinaryBelief",
