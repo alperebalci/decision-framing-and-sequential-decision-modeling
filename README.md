@@ -36,8 +36,17 @@ The Python package provides typed, dependency-free primitives for:
 - traceability audits from the frame into the formal model, including decision-information/state coverage;
 - information requirements for operational policies, including latency, data-quality risk, and fallback behavior;
 - JSON loading and a small validation CLI.
+- decision-table rules with explicit `UNIQUE`/`FIRST` hit policies and finite-domain conflict/coverage audits;
+- structural influence-diagram dependencies and information-timing/cycle validation;
+- versioned recommendations, permitted human overrides, input fingerprints and descriptive outcome tracking.
 
 This is not a solver. It is the layer that answers **what problem is being solved** and **what information the decision process requires** before a solver or policy architecture is selected.
+
+## Decision governance extension
+
+The [decision-governance guide](docs/07-decision-rules-governance-and-influence.md) explains a deliberately scoped DMN-inspired rule table, structural influence diagrams, human override guardrails, and why observational override-rate differences are not causal performance claims.
+
+Run the [governance example](examples/governance_case.py) with `python examples/governance_case.py` after installing the package. This is a reference-policy layer, not an authentication service or a full DMN engine.
 
 ## Installation
 
@@ -50,6 +59,7 @@ python -m pip install -e ".[dev]"
 ```bash
 python examples/inventory_case.py
 python examples/active_inspection_case.py
+python examples/governance_case.py
 python -m decision_framing examples/inventory_frame.json
 ```
 
@@ -107,7 +117,8 @@ From this point, the formal model should define state variables, the decision va
 │   ├── 03-uncertainty-modeling.md
 │   ├── 04-from-frame-to-model.md
 │   ├── 05-information-and-implementation.md
-│   └── 06-portfolio-integration.md
+│   ├── 06-portfolio-integration.md
+│   └── 07-decision-rules-governance-and-influence.md
 ├── tests/
 └── .github/workflows/tests.yml
 ```
@@ -144,6 +155,7 @@ CI runs on Python 3.10 and 3.12 and executes both the JSON validator and the exe
 - Impact scores are structured prioritization aids, not probabilities or statistical confidence measures.
 - The audit functions check traceability and obvious omissions; they do not prove model correctness, Markov sufficiency, identifiability, or optimality.
 - Uncertainty representations are application-dependent and should be validated in specialist simulation/UQ or stochastic-modeling work.
+- Decision-table and influence-diagram validators enforce only declared structural contracts; they do not establish formal DMN conformance, causal identifiability, or actual authorization.
 - Policy design is intentionally delegated to `sequential-decision-analytics` and related repositories.
 
 ## License
